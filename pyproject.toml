@@ -15,7 +15,7 @@ authors = [
 dependencies = [
     "numpy",
     "gym>=0.15",
-    "pyglet"
+    "pyglet==1.5"
 ]
 
 [project.optional-dependencies]
