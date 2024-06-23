@@ -82,7 +82,10 @@ class PressurePlate(gym.Env):
         self._rendering_initialized = False
 
         if layout == 'linear':
-            if self.n_agents == 4:
+            if self.n_agents == 2:
+                self.layout = LINEAR['TWO_PLAYERS']
+
+            elif self.n_agents == 4:
                 self.layout = LINEAR['FOUR_PLAYERS']
 
             elif self.n_agents == 5:
@@ -221,7 +224,7 @@ class PressurePlate(gym.Env):
         self.goal = Goal('goal', self.layout['GOAL'][0][0], self.layout['GOAL'][0][1])
         self.grid[_LAYER_GOAL, self.layout['GOAL'][0][1], self.layout['GOAL'][0][0]] = 1
 
-        return self._get_obs()
+        return self._get_obs(), dict()
 
     def _get_obs(self):
         obs = []

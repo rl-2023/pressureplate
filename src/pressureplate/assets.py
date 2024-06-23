@@ -12,6 +12,36 @@
 """
 
 LINEAR = {
+	'TWO_PLAYERS': {
+		'WALLS': [
+			# First wall
+			[0, 3],
+			[1, 3],
+			[2, 3],
+			[3, 3],
+			[4, 3],
+			[5, 3],
+			[8, 3],
+		],
+
+		# Doors are double doors of coord [[x1,x2], [y1,y2]]
+		'DOORS': [
+			[[6, 7], [3, 3]],
+		],
+
+		'PLATES': [
+			[7, 5],
+		],
+
+		'AGENTS': [
+			[2, 6],
+			[3, 6],
+		],
+
+		'GOAL': [
+			[3, 1]
+		]
+	},
 	'FOUR_PLAYERS': {
 		'WALLS': [
 			# First wall
