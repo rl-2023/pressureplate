@@ -347,6 +347,20 @@ class PressurePlate(gym.Env):
                 nearest_door_dist = float('inf')
                 for door in self.doors:
                     for j in range(len(door.x)):
+                        if curr_room==0:
+                            further_point=0,0
+                            door_loc = door.x[curr_room], door.y[curr_room]
+                            max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
+                            dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)                            
+                            if dist_to_door < nearest_door_dist:
+                                nearest_door_dist = dist_to_door
+                        else:
+                            if curr_room <= j:
+                                door_loc = door.x[j], door.y[j]
+                                dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)
+                                previous_door_loc=door.x[curr_room-1], door.y[curr_room-1]
+                                max_door_dist = np.linalg.norm((np.array(previous_door_loc) - np.array(door_loc)),1)
+                        '''
                         if curr_room <= j:
                             door_loc = door.x[j], door.y[j]
                             dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)
@@ -361,7 +375,7 @@ class PressurePlate(gym.Env):
                                 further_point=0,0
                                 door_loc = door.x[curr_room], door.y[curr_room]
                                 max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
-                            
+                        '''    
                 reward = -len(self.room_boundaries)+1 + curr_room + nearest_door_dist/max_door_dist
             
             rewards.append(reward)
