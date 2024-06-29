@@ -344,22 +344,21 @@ class PressurePlate(gym.Env):
                 reward = - np.linalg.norm((np.array(plate_loc) - np.array(agent_loc)), 1) / self.max_dist
             else:
                 nearest_door_dist = float('inf')
-                for door in self.doors:
-                    for j in range(len(door.x)):
-                        if curr_room==0:
-                            further_point=0,0
-                            door_loc = door.x[curr_room], door.y[curr_room]
-                            max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
-                            dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)                            
+                for j in range(len(self.doors)):
+                    if curr_room==0:
+                        further_point=0,0
+                        door_loc = self.doors[curr_room].x, self.doors[curr_room].y
+                        max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
+                        dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)                            
+                        if dist_to_door < nearest_door_dist:
+                            nearest_door_dist = dist_to_door
+                    else:
+                        if curr_room <= j:
+                            door_loc = self.doors[j].x, self.doors[j].y
+                            previous_door_loc=self.doors[curr_room-1].x, self.doors[curr_room-1].y
+                            max_door_dist = np.linalg.norm((np.array(previous_door_loc) - np.array(door_loc)),1)
                             if dist_to_door < nearest_door_dist:
                                 nearest_door_dist = dist_to_door
-                        else:
-                            if curr_room <= j:
-                                door_loc = door.x[j], door.y[j]
-                                previous_door_loc=door.x[curr_room-1], door.y[curr_room-1]
-                                max_door_dist = np.linalg.norm((np.array(previous_door_loc) - np.array(door_loc)),1)
-                                if dist_to_door < nearest_door_dist:
-                                    nearest_door_dist = dist_to_door
 
                 reward = -len(self.room_boundaries) + curr_room + 1-nearest_door_dist/max_door_dist
             
