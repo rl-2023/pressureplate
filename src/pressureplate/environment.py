@@ -342,6 +342,8 @@ class PressurePlate(gym.Env):
 
             if i == curr_room:
                 reward = - np.linalg.norm((np.array(plate_loc) - np.array(agent_loc)), 1) / self.max_dist
+                if reward == 0:
+                    reward=0.5
             else:
                 if self.n_agents==2:
                     door=self.doors[0]
