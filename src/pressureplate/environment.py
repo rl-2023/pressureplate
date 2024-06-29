@@ -343,7 +343,6 @@ class PressurePlate(gym.Env):
             if i == curr_room:
                 reward = - np.linalg.norm((np.array(plate_loc) - np.array(agent_loc)), 1) / self.max_dist
             else:
-                #TODO implementing reward that consider distance from the doors for agents not in the goal room
                 nearest_door_dist = float('inf')
                 for door in self.doors:
                     for j in range(len(door.x)):
@@ -361,23 +360,7 @@ class PressurePlate(gym.Env):
                                 max_door_dist = np.linalg.norm((np.array(previous_door_loc) - np.array(door_loc)),1)
                                 if dist_to_door < nearest_door_dist:
                                     nearest_door_dist = dist_to_door
-                        '''
-                        if curr_room <= j:
-                            door_loc = door.x[j], door.y[j]
-                            dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)
-                            if dist_to_door < nearest_door_dist:
-                                nearest_door_dist = dist_to_door
-                        elif j == (curr_room-1):
-                            if curr_room != 0:
-                                further_point = door.x[j], door.y[j]
-                                door_loc = door.x[curr_room], door.y[curr_room]
-                                max_door_dist = np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
-                            else:
-                                further_point=0,0
-                                door_loc = door.x[curr_room], door.y[curr_room]
-                                max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
-                        '''    
-                #print('normalized distance to door:', nearest_door_dist/max_door_dist)
+
                 reward = -len(self.room_boundaries) + curr_room + 1-nearest_door_dist/max_door_dist
             
             rewards.append(reward)
