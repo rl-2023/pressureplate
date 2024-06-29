@@ -378,7 +378,7 @@ class PressurePlate(gym.Env):
                                 max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
                         '''    
                 #print('normalized distance to door:', nearest_door_dist/max_door_dist)
-                reward = -len(self.room_boundaries)+1 + curr_room + 1-nearest_door_dist/max_door_dist
+                reward = -len(self.room_boundaries) + curr_room + 1-nearest_door_dist/max_door_dist
             
             rewards.append(reward)
         return rewards
