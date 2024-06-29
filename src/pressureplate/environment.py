@@ -357,9 +357,10 @@ class PressurePlate(gym.Env):
                         else:
                             if curr_room <= j:
                                 door_loc = door.x[j], door.y[j]
-                                dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)
                                 previous_door_loc=door.x[curr_room-1], door.y[curr_room-1]
                                 max_door_dist = np.linalg.norm((np.array(previous_door_loc) - np.array(door_loc)),1)
+                                if dist_to_door < nearest_door_dist:
+                                    nearest_door_dist = dist_to_door
                         '''
                         if curr_room <= j:
                             door_loc = door.x[j], door.y[j]
