@@ -139,11 +139,12 @@ class PressurePlate(gym.Env):
                 if [plate.x, plate.y] == [self.agents[plate.id].x, self.agents[plate.id].y]:
                     plate.pressed = True
                     self.doors[plate.id].open = True
-
+            '''
             else:
                 if [plate.x, plate.y] != [self.agents[plate.id].x, self.agents[plate.id].y]:
                     plate.pressed = False
-                    self.doors[plate.id].open = False
+                    self.doors[plate.id].open = False            
+            '''
 
         # Detecting goal completion
         r = []
