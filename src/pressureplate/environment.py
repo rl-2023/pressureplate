@@ -139,11 +139,12 @@ class PressurePlate(gym.Env):
                 if [plate.x, plate.y] == [self.agents[plate.id].x, self.agents[plate.id].y]:
                     plate.pressed = True
                     self.doors[plate.id].open = True
-
+            '''
             else:
                 if [plate.x, plate.y] != [self.agents[plate.id].x, self.agents[plate.id].y]:
                     plate.pressed = False
-                    self.doors[plate.id].open = False
+                    self.doors[plate.id].open = False            
+            '''
 
         # Detecting goal completion
         r = []
@@ -323,7 +324,7 @@ class PressurePlate(gym.Env):
             grid[agent.y, agent.x] = 1
 
         return grid
-
+        
     def _get_rewards(self):
         rewards = []
 
@@ -342,12 +343,36 @@ class PressurePlate(gym.Env):
 
             if i == curr_room:
                 reward = - np.linalg.norm((np.array(plate_loc) - np.array(agent_loc)), 1) / self.max_dist
+                if reward == 0:
+                    reward=0.5
             else:
-                reward = -len(self.room_boundaries)+1 + curr_room
-            
+                if self.n_agents==2:
+                    door=self.doors[0]
+                    door_loc= door.x[0], door.y[0]            
+                    dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1) 
+                    further_point=0,6
+                    max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
+
+                    reward = -len(self.room_boundaries) + curr_room + 1-dist_to_door/max_door_dist
+
+                elif self.n_agents==4:
+                    further_from_doors=[[0,14],[10,12],[0,6]]
+                    door=self.doors[curr_room]
+                    door_loc= door.x[0], door.y[0]
+                    dist_to_door  = np.linalg.norm((np.array(door_loc) - np.array(agent_loc)), 1)
+                    further_point=further_from_doors[curr_room]
+                    max_door_dist= np.linalg.norm((np.array(further_point) - np.array(door_loc)),1)
+                
+                    reward = -len(self.room_boundaries) + curr_room + 1-dist_to_door/max_door_dist
+
+                else:
+                    #TODO implement for other number of agents
+                    print('distance from doors implemented only for n_agents 2,4 --> see line 366 pressureplate/environment')
+                    reward = -len(self.room_boundaries) + curr_room + 1
+
             rewards.append(reward)
         return rewards
-
+    
     def _get_curr_room_reward(self, agent_y):
         for i, room_level in enumerate(self.room_boundaries):
             if agent_y > room_level:
